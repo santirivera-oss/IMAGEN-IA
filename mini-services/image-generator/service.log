@@ -1,0 +1,10 @@
+$ bun --hot index.ts
+🖼️ Image Generator Service running on port 3030
+📡 Health check: http://localhost:3030/health
+🎨 Generate endpoint: POST http://localhost:3030/generate
+[2026-02-22T01:22:20.387Z] Generating image with prompt: crea un perro flotante, high quality, detailed, professional...
+[2026-02-22T01:22:49.026Z] Image generated successfully: img_mlx2cksf4qb87q016
+[2026-02-22T01:24:57.484Z] Generating YouTube thumbnail...
+[2026-02-22T01:27:48.761Z] Generating image with prompt: crea un perro flotando
+, high quality, detailed, professional...
+[2026-02-22T01:28:16.515Z] Image generated successfully: img_mlx2jlhdgmyuvbj67

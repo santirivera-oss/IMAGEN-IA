@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Image {
+  id          String   @id @default(cuid())
+  prompt      String
+  enhancedPrompt String?
+  imageBase64 String
+  size        String   @default("1024x1024")
+  style       String?
+  mood        String?
+  lighting    String?
+  aspectRatio String?
+  type        String   @default("text-to-image") // text-to-image, character, brand, youtube-thumbnail, edit
+  characterId String?
+  brandId     String?
+  parentImageId String?  // For edited images
+  metadata    String?    // JSON string for additional metadata
+  isFavorite  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  character   Character?  @relation(fields: [characterId], references: [id])
+  brand       Brand?      @relation(fields: [brandId], references: [id])
+  parentImage Image?      @relation("ImageEdits", fields: [parentImageId], references: [id])
+  edits       Image[]     @relation("ImageEdits")
+}
+
+model Character {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  basePrompt  String   // Core prompt that defines the character
+  traits      String?  // JSON string with character traits
+  styleNotes  String?  // Additional style notes for consistency
+  avatarBase64 String? // Reference image
+  images      Image[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Brand {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  primaryColor  String?  // Hex color
+  secondaryColor String?
+  accentColor   String?
+  styleGuide    String?  // Text description of brand style
+  logoBase64    String?  // Base64 encoded logo
+  fontPreference String?
+  moodKeywords  String?  // Comma-separated keywords
+  images        Image[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model YoutubeThumbnail {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  prompt      String
+  imageBase64 String
+  size        String   @default("1344x768")
+  textColor   String?
+  textPosition String?
+  style       String?
+  imageId     String?  // Link to main image if generated from one
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
